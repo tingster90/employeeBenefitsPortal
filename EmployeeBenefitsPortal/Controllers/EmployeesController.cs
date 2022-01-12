@@ -40,14 +40,14 @@ namespace EmployeeBenefitsPortal.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Employee>> AddEmployee(Employee employee)
+        public async Task<ActionResult<Employee>> Add(Employee employee)
         {
             await employeeService.AddEmployee(employee);
             return Ok(employee);
         }
 
         [HttpDelete("{employeeId}")]
-        public async Task<IActionResult> DeleteTodoItem(Guid employeeId)
+        public async Task<IActionResult> Delete(Guid employeeId)
         {
             await employeeService.DeleteEmployee(employeeId);
             return NoContent();
