@@ -40,5 +40,10 @@ namespace EmployeeBenefitsPortal.Services
 
             return 0;
         }
+
+        public decimal GetTakeHomePayPerPaycheck(decimal grossPay, decimal deduction)
+        {
+            return grossPay - deduction;
+        }
     }
 }

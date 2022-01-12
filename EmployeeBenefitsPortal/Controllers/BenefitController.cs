@@ -23,13 +23,14 @@ namespace EmployeeBenefitsPortal.Controllers
         public async Task<ActionResult<BenefitOverviewDto>> Get(Guid employeeId)
         {
             var employee = await employeeService.GetEmployee(employeeId);
+            var deductionPerPaycheck = benefitDeductionCalculationService.GetDeductionPerPaycheck(employee);
 
             BenefitOverviewDto benefitOverview = new BenefitOverviewDto
             {
                 EmployeeId = employee.Id,
                 GrossPayPerPaycheck = employee.GrossPayPerPaycheck,
-                DeductionPerPaycheck = benefitDeductionCalculationService.GetDeductionPerPaycheck(employee),
-                TakeHomePayPerPaycheck = employee.GrossPayPerPaycheck - benefitDeductionCalculationService.GetDeductionPerPaycheck(employee),
+                DeductionPerPaycheck = deductionPerPaycheck,
+                TakeHomePayPerPaycheck = benefitDeductionCalculationService.GetTakeHomePayPerPaycheck(employee.GrossPayPerPaycheck, deductionPerPaycheck),
                 AnnualDeductionCost = benefitDeductionCalculationService.GetAnnualDeduction(employee),
             };
 

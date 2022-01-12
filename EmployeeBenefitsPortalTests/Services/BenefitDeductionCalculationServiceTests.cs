@@ -27,7 +27,7 @@ namespace EmployeeBenefitsPortalTests.Services
             var employee = CreateEmployeeWithSpouseAndChild();
             var expectedAnnualDeduction = Constants.EMPLOYEE_ANNUAL_BENEFIT_COST + Constants.DEPENDENT_ANNUAL_BENEFIT_COST * 2;
             var actualAnnualDeduction = service.GetAnnualDeduction(employee);
-            Assert.IsTrue(expectedAnnualDeduction == actualAnnualDeduction);
+            Assert.AreEqual(expectedAnnualDeduction, actualAnnualDeduction);
 
         }
 
@@ -37,7 +37,7 @@ namespace EmployeeBenefitsPortalTests.Services
             var employee = CreateEmployeeWithDiscountEligibility();
             var expectedAnnualDeduction = Constants.EMPLOYEE_ANNUAL_BENEFIT_COST * (1 - Constants.NAME_DISCOUNT);
             var actualAnnualDeduction = service.GetAnnualDeduction(employee);
-            Assert.IsTrue(expectedAnnualDeduction == actualAnnualDeduction);
+            Assert.AreEqual(expectedAnnualDeduction, actualAnnualDeduction);
 
         }
 
@@ -47,7 +47,7 @@ namespace EmployeeBenefitsPortalTests.Services
             var employee = CreateEmployeeWithSpouseAndChild();
             var expectedDeductionPeyPaycheck = (Constants.EMPLOYEE_ANNUAL_BENEFIT_COST + Constants.DEPENDENT_ANNUAL_BENEFIT_COST * 2) / Constants.NUM_OF_PAYCHECK_PER_YEAR;
             var actualDeductionPerPaycheck = service.GetDeductionPerPaycheck(employee);
-            Assert.IsTrue(expectedDeductionPeyPaycheck == actualDeductionPerPaycheck);
+            Assert.AreEqual(expectedDeductionPeyPaycheck, actualDeductionPerPaycheck);
         }
 
         [Test]
@@ -56,7 +56,7 @@ namespace EmployeeBenefitsPortalTests.Services
             var employee = CreateEmployeeWithDiscountEligibility();
             var expectedDeductionPeyPaycheck = (Constants.EMPLOYEE_ANNUAL_BENEFIT_COST * (1 - Constants.NAME_DISCOUNT)) / Constants.NUM_OF_PAYCHECK_PER_YEAR;
             var actualDeductionPerPaycheck = service.GetDeductionPerPaycheck(employee);
-            Assert.IsTrue(expectedDeductionPeyPaycheck == actualDeductionPerPaycheck);
+            Assert.AreEqual(expectedDeductionPeyPaycheck, actualDeductionPerPaycheck);
         }
 
         [Test]
@@ -70,7 +70,18 @@ namespace EmployeeBenefitsPortalTests.Services
 
             var discount = service.GetBenefitDiscountRateByName(employee.FirstName, employee.LastName);
 
-            Assert.IsTrue(discount == Constants.NAME_DISCOUNT);
+            Assert.AreEqual(discount, Constants.NAME_DISCOUNT);
+        }
+
+        [Test]
+        public void ShouldCalculateTakeHomePayPerPaycheck()
+        {
+            decimal grossPay = Constants.BASE_PAYCHECK;
+            decimal deduction = 100.0M;
+
+            decimal actualTakeHomePay = service.GetTakeHomePayPerPaycheck(grossPay, deduction);
+
+            Assert.AreEqual((grossPay - deduction), actualTakeHomePay);
         }
 
         [Test]
@@ -80,7 +91,7 @@ namespace EmployeeBenefitsPortalTests.Services
 
             var discount = service.GetBenefitDiscountRateByName(employee.FirstName, employee.LastName);
 
-            Assert.IsTrue(discount == Constants.NAME_DISCOUNT);
+            Assert.AreEqual(discount, Constants.NAME_DISCOUNT);
         }
 
         [Test]
@@ -94,7 +105,7 @@ namespace EmployeeBenefitsPortalTests.Services
 
             var discount = service.GetBenefitDiscountRateByName(employee.FirstName, employee.LastName);
 
-            Assert.IsTrue(discount == 0);
+            Assert.AreEqual(discount, 0);
         }
 
         private Employee CreateEmployeeWithSpouseAndChild()
