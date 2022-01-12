@@ -1,0 +1,47 @@
+<div class="container">
+    <div class="row justify-content-between">
+        <h3 id="tableLabel">Employee Benefit Manager</h3>
+        <button (click)="addEmployee()" class="btn btn-primary">Add Employee</button>
+    </div>
+</div>
+<br />
+
+<div *ngIf="employees && employees.length > 0" class="container grid-striped">
+    <div class="row header row-with-padding">
+        <div class="col-sm">Name</div>
+        <div class="col-sm">Dependents</div>
+        <div class="col-sm"></div>
+    </div>
+    <div class="row parent-row row-with-padding" *ngFor="let employee of employees; let i = index">
+        <div class="col-sm">
+            <div class="row">
+                <div class="col-sm">{{ employee.firstName }} {{ employee.lastName }}</div>
+                <div class="col-sm">
+                    <div *ngFor="let dependent of employee.dependents">
+                        {{dependent.firstName}} {{dependent.lastName}} | {{DependentType[dependent.type]}}
+                    </div>
+                </div>
+                <div class="col-sm text-right">
+                    <button id="delete-btn" class="btn btn-danger" (click)="deleteEmployee(employee.id)">Delete</button>
+                    <button (click)="previewBenefitCost(employee.id)" class="btn btn-secondary">Preview Cost</button>
+                </div>
+            </div>
+            <div *ngIf="selectedEmployeeId === employee.id && showBenefitCost" class="row">
+                <div id="benefit-overview" class="col">
+                    <div>
+                        Annual Benefit Deduction Cost: <b>{{benefitOverview.annualDeductionCost | currency}}</b>
+                    </div>
+                    <div>
+                        Gross Pay Per Paycheck: <b>{{benefitOverview.grossPayPerPaycheck | currency}}</b>
+                    </div>
+                    <div>
+                        Deduction Per Paycheck: <b>{{benefitOverview.deductionPerPaycheck | currency}}</b>
+                    </div>
+                    <div>
+                        Take Home Per Paycheck: <b>{{benefitOverview.takeHomePayPerPaycheck | currency}}</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

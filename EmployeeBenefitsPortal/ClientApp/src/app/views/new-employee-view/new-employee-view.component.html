@@ -1,0 +1,62 @@
+<form id="newEmployeeForm" [formGroup]="newEmployeeForm" (ngSubmit)="createEmployee()">
+    <div class="container">
+        <h4>Employee Information</h4>
+        <div class="row">
+            <div class="col-6">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control" id="firstName" formControlName="firstName">
+            </div>
+            <div class="col-6">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control" id="lastName" formControlName="lastName">
+            </div>
+        </div>
+        <br />
+
+        <h4>Dependent(s)</h4>
+        <div class="row">
+            <h5 class="align-self-end col-1">Spouse</h5>
+            <button *ngIf="!showSpouse" id="add-child-btn" type="button" (click)="addSpouse()" class="btn btn-outline-success col-1">Add Spouse</button>
+        </div>
+        <div *ngIf="showSpouse" class="row">
+            <div class="col-5">
+                <label for="spouseFirstName">First Name</label>
+                <input type="text" class="form-control" id="spouseFirstName" formControlName="spouseFirstName">
+            </div>
+            <div class="col-5">
+                <label for="spouseLastName">Last Name</label>
+                <input type="text" class="form-control" id="spouseLastName" formControlName="spouseLastName">
+            </div>
+            <div class="col-2 align-self-end">
+                <button (click)="removeSpouse()" class="btn btn-outline-danger">Remove</button>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <h5 class="align-self-end col-1">Children</h5>
+            <button id="add-child-btn" type="button" (click)="addChild()" class="btn btn-outline-success col-1">Add Child</button>
+        </div>
+        <div formArrayName="children">
+            <div *ngFor="let child of children().controls; let i=index" [formGroupName]="i" class="row">
+                <div class="col-5">
+                    <label for="firstName{{i}}">First Name</label>
+                    <input type="text" class="form-control" id="firstName{{i}}" formControlName="firstName">
+                </div>
+                <div class="col-5">
+                    <label for="lastName{{i}}">Last Name</label>
+                    <input type="text" class="form-control" id="lastName{{i}}" formControlName="lastName">
+                </div>
+                <div class="col-2 align-self-end">
+                    <button (click)="removeChild(i)" class="btn btn-outline-danger">Remove</button>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row justify-content-center">
+            <button id="cancel-btn" class="btn btn-light" routerLink="/..">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="newEmployeeForm.invalid">Add Employee</button>
+        </div>
+    </div>
+</form>
